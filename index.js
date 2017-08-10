@@ -54,6 +54,10 @@ const propTypes = {
   cancelText : PropTypes.string,
   itemStyle: PropTypes.object,
   onSubmit: PropTypes.func,
+  initialOption: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
 };
 
 class SimplePicker extends Component {
@@ -63,7 +67,7 @@ class SimplePicker extends Component {
     this.state = {
       buttonColor: this.props.buttonColor || '#007AFF',
       modalVisible: false,
-      selectedOption: this.props.options[0],
+      selectedOption: this.props.initialOption || this.props.options[0],
     };
 
     this.onPressCancel = this.onPressCancel.bind(this);
