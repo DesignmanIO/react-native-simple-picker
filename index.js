@@ -54,6 +54,11 @@ const propTypes = {
   cancelText : PropTypes.string,
   itemStyle: PropTypes.object,
   onSubmit: PropTypes.func,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
+  onValueChange: PropTypes.func,
   initialOption: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
@@ -75,7 +80,7 @@ class SimplePicker extends Component {
     this.onValueChange = this.onValueChange.bind(this);
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps(props, nextProps) {
     // If options are changing, and our current selected option is not part of
     // the new options, update it.
     if(
@@ -93,6 +98,11 @@ class SimplePicker extends Component {
           this.onPressSubmit();
         }
       });
+    }
+
+    // If using value prop, it's a controlled component and state should update right away
+    if (typeof nextProps.value !== 'undefined' && props.value !== nextProps.value) {
+      this.setState({selectedOption: value})
     }
   }
 
@@ -113,6 +123,8 @@ class SimplePicker extends Component {
   }
 
   onValueChange(option) {
+    // Pass up value, if it's a controlled component
+    this.props.valueChange && this.props.valueChange(option);
     this.setState({
       selectedOption: option,
     });
