@@ -58,7 +58,6 @@ const propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]),
-  onValueChange: PropTypes.func,
   initialOption: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
@@ -90,7 +89,7 @@ class SimplePicker extends Component {
     ) {
       const previousOption = this.state.selectedOption;
       this.setState({
-        selectedOption : props.options[0]
+        selectedOption : nextProps.value || props.options[0]
       }, () => {
         // Options array changed and the previously selected option is not present anymore.
         // Should call onSubmit function to tell parent to handle the change too.
@@ -102,7 +101,7 @@ class SimplePicker extends Component {
 
     // If using value prop, it's a controlled component and state should update right away
     if (typeof nextProps.value !== 'undefined' && props.value !== nextProps.value) {
-      this.setState({selectedOption: value})
+      this.setState({selectedOption: nextProps.value})
     }
   }
 
@@ -123,8 +122,6 @@ class SimplePicker extends Component {
   }
 
   onValueChange(option) {
-    // Pass up value, if it's a controlled component
-    this.props.valueChange && this.props.valueChange(option);
     this.setState({
       selectedOption: option,
     });
