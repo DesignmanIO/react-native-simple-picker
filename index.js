@@ -80,6 +80,11 @@ class SimplePicker extends Component {
   }
 
   componentWillReceiveProps(props, nextProps) {
+    // If using value prop, it's a controlled component and state should update right away
+    if (typeof nextProps.value !== 'undefined' && props.value !== nextProps.value) {
+      this.setState({selectedOption: nextProps.value});
+    }
+
     // If options are changing, and our current selected option is not part of
     // the new options, update it.
     if(
@@ -97,11 +102,6 @@ class SimplePicker extends Component {
           this.onPressSubmit();
         }
       });
-    }
-
-    // If using value prop, it's a controlled component and state should update right away
-    if (typeof nextProps.value !== 'undefined' && props.value !== nextProps.value) {
-      this.setState({selectedOption: nextProps.value})
     }
   }
 
