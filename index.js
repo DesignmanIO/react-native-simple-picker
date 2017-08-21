@@ -79,22 +79,22 @@ class SimplePicker extends Component {
     this.onValueChange = this.onValueChange.bind(this);
   }
 
-  componentWillReceiveProps(props, nextProps) {
+  componentWillReceiveProps(nextProps) {
     // If using value prop, it's a controlled component and state should update right away
-    if (typeof nextProps.value !== 'undefined' && props.value !== nextProps.value) {
+    if (typeof nextProps.value !== 'undefined' && this.props.value !== nextProps.value) {
       this.setState({selectedOption: nextProps.value});
     }
 
     // If options are changing, and our current selected option is not part of
     // the new options, update it.
     if(
-      props.options
-      && props.options.length > 0
-      && props.options.indexOf(this.state.selectedOption) == -1
+      nextProps.options
+      && nextProps.options.length > 0
+      && nextProps.options.indexOf(this.state.selectedOption) == -1
     ) {
       const previousOption = this.state.selectedOption;
       this.setState({
-        selectedOption : nextProps.value || props.options[0]
+        selectedOption : nextProps.value || nextProps.options[0]
       }, () => {
         // Options array changed and the previously selected option is not present anymore.
         // Should call onSubmit function to tell parent to handle the change too.
