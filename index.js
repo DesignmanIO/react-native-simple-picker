@@ -81,8 +81,14 @@ class SimplePicker extends Component {
 
   componentWillReceiveProps(nextProps) {
     // If using value prop, it's a controlled component and state should update right away
-    if (typeof nextProps.value !== 'undefined' && this.props.value !== nextProps.value) {
-      this.setState({selectedOption: nextProps.value});
+    if (typeof nextProps.value !== 'undefined') {
+      // If the value provided doesn't exist, throw error
+      if (nextProps.options.indexOf(nextProps.value) == -1){
+        throw `Error: value prop "${nextProps.value}" is not among selected options, check the value prop of SimplePicker`;
+      }
+      if (this.props.value !== nextProps.value){
+        this.setState({selectedOption: nextProps.value});
+      }
     }
 
     // If options are changing, and our current selected option is not part of
